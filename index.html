@@ -5,6 +5,8 @@
 <title>CricxCrate – Prime Hindi Live</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.5/shaka-player.compiled.js"></script>
+
 <style>
 *{box-sizing:border-box}
 body{
@@ -47,6 +49,7 @@ iframe {
   width: 100%;
   height: 100%;
   border: none;
+  outline: none;
 }
 .section{
   max-width:950px;
@@ -75,18 +78,15 @@ iframe {
   cursor:pointer;
   text-decoration:none;
   box-shadow:0 6px 14px rgba(0,0,0,.08);
+  transition: transform 0.2s ease;
 }
 .btn.primary{
   background:#00a8e1;
   color:#fff;
   border:none;
 }
-.btn.warning {
-  background: #ff4757;
-  color: #fff;
-}
 .btn:active{
-  transform:scale(.96);
+  transform:scale(.95);
 }
 .banner{
   max-width:950px;
@@ -157,19 +157,13 @@ iframe {
 <div class="main-content">
   <div class="top-bar glass">CricxCrate • Prime Hindi</div>
 
-  <div class="player-wrap" id="playerFrame">
+  <div class="player-wrap">
     <iframe 
-      id="main-stream"
       src="https://all-in-one-channel.vercel.app/PRIME/DILLZY/" 
       allowfullscreen 
-      sandbox="allow-scripts allow-same-origin allow-forms allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"
+      sandbox="allow-scripts allow-same-origin allow-forms"
       referrerpolicy="no-referrer">
     </iframe>
-  </div>
-
-  <div class="section glass">
-    <h3>🛠️ Player Tools</h3>
-    <button class="btn warning" onclick="refreshPlayer()">Refresh Stream</button>
   </div>
 
   <div class="section glass">
@@ -193,15 +187,11 @@ iframe {
 </div>
 
 <script>
-function refreshPlayer() {
-  const frame = document.getElementById('main-stream');
-  const currentSrc = frame.src;
-  frame.src = ''; 
-  setTimeout(() => { frame.src = currentSrc; }, 100);
-}
-
+/* TRACKING & ANALYTICS */
 function initTracking() {
-  fetch("https://dillzycounter.vercel.app/api/hit?key=prime-hin").catch(() => {});
+  // Prime Hindi Hit Counter
+  fetch("https://dillzycounter.vercel.app/api/hit?key=prime-hin")
+    .catch(() => console.log("Tracker offline"));
 }
 
 document.addEventListener('DOMContentLoaded', initTracking);
@@ -216,7 +206,10 @@ function copyLink(){
 
 function sharePage(){
   if(navigator.share){
-    navigator.share({title:"Prime Hindi Live – CricxCrate", url:location.href});
+    navigator.share({
+      title: "Prime Hindi Live – CricxCrate", 
+      url: location.href
+    });
   }
 }
 
@@ -229,10 +222,11 @@ function closePopup(){
   },300);
 }
 
-if(sessionStorage.getItem("joined")!=="yes"){
+// Initial Popup Check
+if(sessionStorage.getItem("joined") !== "yes"){
   document.body.classList.add("popup-active");
-}else{
-  popup.style.display="none";
+} else {
+  popup.style.display = "none";
 }
 </script>
 

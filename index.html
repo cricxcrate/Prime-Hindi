@@ -1,11 +1,10 @@
-<!DOCTYPE html> 
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>CricxCrate – Prime Hindi Live</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.5/shaka-player.compiled.js"></script>
+<!DOCTYPE html>  
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<title>CricxCrate – Star Sports Hindi</title> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<meta name="referrer" content="no-referrer">  
 
 <style>
 *{box-sizing:border-box}
@@ -45,10 +44,10 @@ body.popup-active .main-content > :not(.player-wrap){
   position: relative;
   aspect-ratio: 16/9;
 }
-video {
+iframe {
   width: 100%;
   height: 100%;
-  outline: none;
+  border: none;
 }
 .section{
   max-width:950px;
@@ -125,8 +124,7 @@ video {
 }
 .popup-box h2{margin:0 0 8px}
 .popup-box p{margin:0 0 18px;color:#6b7280}
-.popup-box a,
-.popup-box button{
+.popup-box a, .popup-box button{
   display:block;
   width:100%;
   margin-top:12px;
@@ -140,9 +138,9 @@ video {
 .popup-join{background:#00a8e1;color:#fff}
 .popup-done{background:rgba(255,255,255,.9);color:#00a8e1}
 </style>
-</head>
+</head>  
 
-<body oncontextmenu="return false">
+<body oncontextmenu="return false"> 
 
 <div class="popup" id="popup">
   <div class="popup-box">
@@ -154,10 +152,16 @@ video {
 </div>
 
 <div class="main-content">
-  <div class="top-bar glass">CricxCrate • Prime Hindi</div>
+  <div class="top-bar glass">CricxCrate • Star Sports Hindi</div>
 
   <div class="player-wrap">
-    <video id="video" poster="https://telegra.ph/file/5a544f849e7555627685d.jpg" controls autoplay></video>
+    <iframe 
+      src="https://allrounder-king.pages.dev/prame-hin"
+      referrerpolicy="no-referrer"
+      sandbox="allow-scripts allow-same-origin allow-forms"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
   </div>
 
   <div class="section glass">
@@ -181,47 +185,15 @@ video {
 </div>
 
 <script>
-/* PLAYER LOGIC */
-async function initPlayer() {
-  const video = document.getElementById('video');
-  const player = new shaka.Player(video);
-
-  // Configure ClearKey DRM Keys
-  player.configure({
-    drm: {
-      clearKeys: {
-        'b07e9785466b831915621dc51ed50d3c': 'af30a9d18114259f21a3cc9e34ff649d'
-      }
-    }
-  });
-
-  // Listen for errors
-  player.addEventListener('error', (event) => {
-    console.error('Error code', event.detail.code, 'object', event.detail);
-  });
-
-  try {
-    await player.load('https://a166aivottlinear-a.akamaihd.net/OTTB/bom-nitro/live/dash/enc/igjuwt107o/out/v1/489e489428ce4992b9bd784d6b948ab3/cenc.mpd');
-    console.log('Stream loaded successfully');
-  } catch (e) {
-    console.error('Load failed', e);
-  }
-}
-
-/* TRACKING & ANALYTICS */
-function initTracking() {
-  fetch("https://dillzycounter.vercel.app/api/hit?key=prime-hin")
-    .catch(() => console.log("Tracker offline"));
-}
-
-/* INITIALIZE EVERYTHING */
-document.addEventListener('DOMContentLoaded', () => {
-  initTracking();
-  initPlayer();
-});
-
-/* UI LOGIC */
 const popup = document.getElementById("popup");
+
+/* COUNTER HIT */
+fetch("https://dillzycounter.vercel.app/api/hit?key=prime-hin");
+
+/* OPTIONAL GET (console only) */
+fetch("https://dillzycounter.vercel.app/api/get?key=prime-hin")
+  .then(res => res.json())
+  .then(data => console.log("Views:", data));
 
 function copyLink(){
   navigator.clipboard.writeText(location.href);
@@ -231,7 +203,7 @@ function copyLink(){
 function sharePage(){
   if(navigator.share){
     navigator.share({
-      title: "Prime Hindi Live – CricxCrate", 
+      title: "Star Sports Hindi Live – CricxCrate",
       url: location.href
     });
   }
@@ -242,16 +214,19 @@ function closePopup(){
   setTimeout(()=>{
     popup.style.display="none";
     document.body.classList.remove("popup-active");
-    sessionStorage.setItem("joined","yes");
+    sessionStorage.setItem("joined_hindi","yes");
   },300);
 }
 
-// Initial Popup Check
-if(sessionStorage.getItem("joined") !== "yes"){
+if(sessionStorage.getItem("joined_hindi") !== "yes"){
   document.body.classList.add("popup-active");
 } else {
   popup.style.display = "none";
 }
+
+window.onbeforeunload = function() {
+  return null;
+};
 </script>
 
 </body>
